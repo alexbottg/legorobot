@@ -1,85 +1,498 @@
-
 <!DOCTYPE html>
 <html lang="ru">
-<head style, body, font-family Arial, margin 40px, background #f7f7f7, . h1 color #333>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LegoRobot — Учимся робототехнике</title>
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f0f4f8;
-  color: #263238;
-  text-align: center;
-}
-header {
-  background: #173b68;
-  color: white;
-  padding: 25px 10px;
-}
-main {
-  max-width: 800px;
-  margin: 25px auto;
-  padding: 15px;
-}
-.card {
-  background: white;
-  padding: 22px;
-  margin: 15px 0;
-  border-radius: 15px;
-  box-shadow: 0 3px 10px #ccd3dc;
-}
-button {
-  background: #1687d9;
-  color: white;
-  border: 0;
-  padding: 14px 24px;
-  border-radius: 9px;
-  font-size: 17px;
-  cursor: pointer;
-}
-button:hover { background: #0868ad; }
-</style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1769aa">
+  <title>LEGO ROBOT — умный помощник школьника</title>
+  <style>
+    :root {
+      --blue: #1769aa;
+      --blue-dark: #104d80;
+      --ink: #172536;
+      --muted: #64748b;
+      --line: #dce6ef;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #eaf5ff 0, #f7faff 340px, #f5f7fb 100%);
+      min-height: 100vh;
+    }
+
+    .wrap {
+      width: min(920px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 26px 0 42px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px 20px;
+      box-shadow: 0 8px 28px #16436b0d;
+    }
+
+    .robot {
+      width: 62px;
+      height: 62px;
+      flex: 0 0 62px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      font-size: 34px;
+      background: #e4f2ff;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--blue);
+      font-size: clamp(25px, 5vw, 34px);
+      letter-spacing: .4px;
+    }
+
+    .tagline {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .intro { padding: 24px 4px 18px; }
+
+    .intro h2 {
+      margin: 0 0 8px;
+      font-size: clamp(22px, 4vw, 29px);
+    }
+
+    .intro p {
+      margin: 0;
+      line-height: 1.55;
+      color: #526174;
+      max-width: 680px;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: clamp(17px, 4vw, 25px);
+      box-shadow: 0 10px 30px #16436b0b;
+      margin-top: 16px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 0 14px;
+    }
+
+    .grades {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+    }
+
+    .grade {
+      border: 1px solid #cbdced;
+      background: #f8fbff;
+      color: var(--blue-dark);
+      border-radius: 14px;
+      padding: 13px 5px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .grade small {
+      display: block;
+      font-size: 11px;
+      font-weight: 400;
+      margin-top: 3px;
+    }
+
+    .grade:hover { border-color: var(--blue); }
+
+    .grade.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: white;
+      box-shadow: 0 5px 14px #1769aa30;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin: 17px 0 8px;
+    }
+
+    select, textarea {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 13px 14px;
+      font: inherit;
+      color: var(--ink);
+      background: white;
+      outline: none;
+    }
+
+    select:focus, textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px #1769aa18;
+    }
+
+    textarea {
+      min-height: 132px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      margin: 7px 0 0;
+    }
+
+    .upload {
+      border: 1px dashed #9bb8d3;
+      background: #f8fbff;
+      border-radius: 13px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    input[type="file"] {
+      max-width: 100%;
+      font-size: 13px;
+    }
+
+    #fileName {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    button.primary, button.secondary {
+      border: 0;
+      border-radius: 12px;
+      padding: 13px 18px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button.primary {
+      background: var(--blue);
+      color: white;
+    }
+
+    button.primary:hover { background: var(--blue-dark); }
+
+    button.secondary {
+      background: #edf2f7;
+      color: #334155;
+    }
+
+    .notice {
+      margin-top: 16px;
+      border-radius: 12px;
+      background: #fff8e8;
+      border: 1px solid #f0dfb5;
+      color: #72551b;
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    #result {
+      display: none;
+      margin-top: 14px;
+      padding: 13px 14px;
+      border-radius: 12px;
+      background: #eaf8f1;
+      color: #155c40;
+      line-height: 1.5;
+    }
+
+    footer {
+      text-align: center;
+      color: #7b8795;
+      font-size: 12px;
+      padding: 22px 8px 0;
+    }
+
+    @media (max-width: 600px) {
+      .grades { grid-template-columns: repeat(3, 1fr); }
+
+      header { padding: 15px; }
+
+      .robot {
+        width: 52px;
+        height: 52px;
+        flex-basis: 52px;
+        font-size: 29px;
+      }
+    }
+  </style>
 </head>
+
 <body>
+  <main class="wrap">
 
-<header>
-  <h1>🤖 LegoRobot</h1>
-  <p>Школа юных инженеров и робототехников</p>
-</header>
+    <header>
+      <div class="robot" aria-hidden="true">🤖</div>
+      <div>
+        <h1>LEGO ROBOT</h1>
+        <p class="tagline">Умный помощник школьника</p>
+      </div>
+    </header>
 
-<main>
-  <div class="card">
-    <h2>Добро пожаловать!</h2>
-    <p>Изучай робототехнику, программирование
-    и конструирование вместе с LegoRobot.</p>
-  </div>
+    <section class="intro">
+      <h2>Разберём домашнее задание вместе!</h2>
+      <p>
+        Выбери класс и предмет, напиши задание или прикрепи его фотографию.
+        Помощник будет объяснять материал простым русским языком и давать
+        подсказки, чтобы ты мог разобраться самостоятельно.
+      </p>
+    </section>
 
-  <div class="card">
-    <h2>📚 Выбери свой класс</h2>
-    <button onclick="start(4)">4 класс</button>
-    <button onclick="start(5)">5 класс</button>
-    <button onclick="start(6)">6 класс</button>
-    <button onclick="start(7)">7 класс</button>
-    <button onclick="start(8)">8 класс</button>
-    <button onclick="start(9)">9 класс</button>
-  </div>
+    <section class="panel" aria-labelledby="gradeTitle">
 
-  <div class="card" id="lesson">
-    <h2>🚀 Начнём обучение!</h2>
-    <p>Выбери класс, чтобы начать.</p>
-  </div>
-</main>
+      <h3 class="section-title" id="gradeTitle">
+        1. Выбери свой класс
+      </h3>
 
-<script>
-function start(grade) {
-  document.getElementById("lesson").innerHTML =
-    "<h2>🤖 " + grade + " класс</h2>" +
-    "<p>Добро пожаловать на урок робототехники!</p>" +
-    "<p>Скоро здесь появятся задания и проекты.</p>";
-}
-</script>
+      <div class="grades" role="group" aria-label="Выбор класса">
+        <button class="grade" type="button" data-grade="4" aria-pressed="false">4<small>класс</small></button>
+        <button class="grade" type="button" data-grade="5" aria-pressed="false">5<small>класс</small></button>
+        <button class="grade" type="button" data-grade="6" aria-pressed="false">6<small>класс</small></button>
+        <button class="grade" type="button" data-grade="7" aria-pressed="false">7<small>класс</small></button>
+        <button class="grade" type="button" data-grade="8" aria-pressed="false">8<small>класс</small></button>
+        <button class="grade" type="button" data-grade="9" aria-pressed="false">9<small>класс</small></button>
+      </div>
 
+      <label for="subject">2. Выбери предмет</label>
+
+      <select id="subject">
+        <option value="">Сначала выбери класс</option>
+      </select>
+
+      <p class="hint">
+        Состав предметов и тем будет уточняться по учебному плану
+        Республики Беларусь для каждого класса.
+      </p>
+
+      <label for="task">3. Напиши домашнее задание</label>
+
+      <textarea id="task" placeholder="Например: Реши задачу № 125. Объясни, как найти площадь прямоугольника."></textarea>
+
+      <label for="photo">Или прикрепи фотографию задания</label>
+
+      <div class="upload">
+        <input id="photo" type="file" accept="image/*">
+        <span id="fileName">Файл не выбран</span>
+      </div>
+
+      <p class="hint">
+        Можно выбрать фотографию из галереи телефона.
+        На следующем этапе подключим её распознавание помощником.
+      </p>
+
+      <div class="actions">
+        <button class="primary" id="sendBtn" type="button">
+          Подготовить задание
+        </button>
+
+        <button class="secondary" id="clearBtn" type="button">
+          Очистить
+        </button>
+      </div>
+
+      <div id="result" role="status" aria-live="polite"></div>
+
+      <div class="notice">
+        <strong>Важно:</strong> эта версия — обновлённая главная страница.
+        Для настоящих ответов ИИ, проверки решений и чтения фотографий
+        следующим этапом нужно безопасно подключить серверную часть и
+        ИИ-сервис. Секретные ключи нельзя размещать в этом HTML-файле.
+      </div>
+
+    </section>
+
+    <footer>
+      LEGO ROBOT · Помощник в учёбе · 4–9 классы
+    </footer>
+
+  </main>
+
+  <script>
+    const subjectsByGrade = {
+      4: [
+        "Математика",
+        "Русский язык",
+        "Белорусский язык",
+        "Литературное чтение",
+        "Английский язык",
+        "Человек и мир"
+      ],
+      5: [
+        "Математика",
+        "Русский язык",
+        "Белорусский язык",
+        "Английский язык",
+        "История",
+        "Природоведение"
+      ],
+      6: [
+        "Математика",
+        "Русский язык",
+        "Белорусский язык",
+        "Английский язык",
+        "История Беларуси",
+        "География",
+        "Биология"
+      ],
+      7: [
+        "Алгебра",
+        "Геометрия",
+        "Русский язык",
+        "Белорусский язык",
+        "Английский язык",
+        "История Беларуси",
+        "Всемирная история",
+        "География",
+        "Биология",
+        "Физика"
+      ],
+      8: [
+        "Алгебра",
+        "Геометрия",
+        "Русский язык",
+        "Белорусский язык",
+        "Английский язык",
+        "История Беларуси",
+        "Всемирная история",
+        "География",
+        "Биология",
+        "Физика",
+        "Химия"
+      ],
+      9: [
+        "Алгебра",
+        "Геометрия",
+        "Русский язык",
+        "Белорусский язык",
+        "Английский язык",
+        "История Беларуси",
+        "Всемирная история",
+        "География",
+        "Биология",
+        "Физика",
+        "Химия",
+        "Информатика"
+      ]
+    };
+
+    let selectedGrade = "";
+
+    const subject = document.getElementById("subject");
+    const task = document.getElementById("task");
+    const photo = document.getElementById("photo");
+    const result = document.getElementById("result");
+
+    document.querySelectorAll(".grade").forEach(button => {
+      button.addEventListener("click", () => {
+        selectedGrade = button.dataset.grade;
+
+        document.querySelectorAll(".grade").forEach(item => {
+          const active = item === button;
+          item.classList.toggle("active", active);
+          item.setAttribute("aria-pressed", String(active));
+        });
+
+        subject.innerHTML = '<option value="">Выбери предмет</option>';
+
+        subjectsByGrade[selectedGrade].forEach(name => {
+          const option = document.createElement("option");
+          option.value = name;
+          option.textContent = name;
+          subject.appendChild(option);
+        });
+
+        result.style.display = "none";
+      });
+    });
+
+    photo.addEventListener("change", () => {
+      document.getElementById("fileName").textContent =
+        photo.files.length ? photo.files[0].name : "Файл не выбран";
+    });
+
+    document.getElementById("sendBtn").addEventListener("click", () => {
+      if (!selectedGrade) {
+        showResult("Сначала выбери класс.");
+        return;
+      }
+
+      if (!subject.value) {
+        showResult("Теперь выбери школьный предмет.");
+        return;
+      }
+
+      if (!task.value.trim() && !photo.files.length) {
+        showResult("Напиши задание или прикрепи фотографию.");
+        return;
+      }
+
+      showResult(
+        "Задание подготовлено: " +
+        selectedGrade + " класс · " + subject.value +
+        ". Пока сайт сохраняет выбор на этой странице; подключение " +
+        "ИИ-помощника и обработки фотографии будет следующим этапом."
+      );
+    });
+
+    document.getElementById("clearBtn").addEventListener("click", () => {
+      selectedGrade = "";
+
+      document.querySelectorAll(".grade").forEach(item => {
+        item.classList.remove("active");
+        item.setAttribute("aria-pressed", "false");
+      });
+
+      subject.innerHTML =
+        '<option value="">Сначала выбери класс</option>';
+
+      task.value = "";
+      photo.value = "";
+
+      document.getElementById("fileName").textContent = "Файл не выбран";
+      result.style.display = "none";
+    });
+
+    function showResult(message) {
+      result.textContent = message;
+      result.style.display = "block";
+    }
+  </script>
 </body>
 </html>
