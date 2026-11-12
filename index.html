@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LegoRobot — Учимся робототехнике</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f0f4f8;
+  color: #263238;
+  text-align: center;
+}
+header {
+  background: #173b68;
+  color: white;
+  padding: 25px 10px;
+}
+main {
+  max-width: 800px;
+  margin: 25px auto;
+  padding: 15px;
+}
+.card {
+  background: white;
+  padding: 22px;
+  margin: 15px 0;
+  border-radius: 15px;
+  box-shadow: 0 3px 10px #ccd3dc;
+}
+button {
+  background: #1687d9;
+  color: white;
+  border: 0;
+  padding: 14px 24px;
+  border-radius: 9px;
+  font-size: 17px;
+  cursor: pointer;
+}
+button:hover { background: #0868ad; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🤖 LegoRobot</h1>
+  <p>Школа юных инженеров и робототехников</p>
+</header>
+
+<main>
+  <div class="card">
+    <h2>Добро пожаловать!</h2>
+    <p>Изучай робототехнику, программирование
+    и конструирование вместе с LegoRobot.</p>
+  </div>
+
+  <div class="card">
+    <h2>📚 Выбери свой класс</h2>
+    <button onclick="start(4)">4 класс</button>
+    <button onclick="start(5)">5 класс</button>
+    <button onclick="start(6)">6 класс</button>
+    <button onclick="start(7)">7 класс</button>
+    <button onclick="start(8)">8 класс</button>
+    <button onclick="start(9)">9 класс</button>
+  </div>
+
+  <div class="card" id="lesson">
+    <h2>🚀 Начнём обучение!</h2>
+    <p>Выбери класс, чтобы начать.</p>
+  </div>
+</main>
+
+<script>
+function start(grade) {
+  document.getElementById("lesson").innerHTML =
+    "<h2>🤖 " + grade + " класс</h2>" +
+    "<p>Добро пожаловать на урок робототехники!</p>" +
+    "<p>Скоро здесь появятся задания и проекты.</p>";
+}
+</script>
+
+</body>
+</html>
